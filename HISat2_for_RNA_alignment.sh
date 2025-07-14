@@ -24,7 +24,7 @@ rm $name.sam
 module load picard
 java -jar /opt/easybuild/software/picard/2.18.4-Java-1.8.0_131/picard.jar MarkDuplicates INPUT=$name-sorted.bam OUTPUT=$name-nr-sorted.bam METRICS_FILE=picard-metrics.txt VALIDATION_STRINGENCY=LENIENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
 
-
+# Sort the non-redundant BAM file and create name-sorted BAM
 samtools sort -@ 8 -T $name.sorted -o sorted-$name-nr-sorted.bam $name-nr-sorted.bam
 samtools index $name-nr-sorted.bam
 samtools sort -n -@ 8 -T $name.sorted -o name-sorted-$name-nr-sorted.bam sorted-$name-nr-sorted.bam
@@ -32,10 +32,10 @@ samtools sort -n -@ 8 -T $name.sorted -o name-sorted-$name-nr-sorted.bam sorted-
 # Convert BAM to BED format and generate coverage files 
 module load bedtools
 bamToBed -i sorted-$name-nr-sorted.bam > $name-RNA.bed
-genomeCoverageBed -bg -ibam sorted-$name-nr-sorted.bam -g /net/isi-dcnl/ifs/user_data/dschones/bioresearch/UCSC/mm9/mm9.chrom.sizes > $name.bedgraph
-wigToBigWig $name.bedgraph /net/isi-dcnl/ifs/user_data/dschones/bioresearch/UCSC/mm9/mm9.chrom.sizes $name.bw
+genomeCoverageBed -bg -ibam sorted-$name-nr-sorted.bam -g $genome_dir/$genome.chrom.sizes > $name.bedgraph
+wigToBigWig $name.bedgraph $genome_dir/$genome.chrom.sizes $name.bw
 
 # Count reads in exonic regions
-coverageBed -b $name-RNA.bed -a /net/isi-dcnl/ifs/user_data/dschones/bioresearch/UCSC/mm9/genes/mm9-RefSeq-March-2018.gtf -counts > $name.counts
-/net/isi-dcnl/ifs/user_data/dschones/Seq/160516_160520_combine/rna-analyses/multicov-counts/get-multicov-exonic-counts.py $name.counts
+coverageBed -b $name-RNA.bed -a $genome_dir/$genome.gtf -counts > $name.counts
+python get-multicov-exonic-counts.py $name.counts
 

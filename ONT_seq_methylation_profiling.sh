@@ -13,11 +13,11 @@ genome=$3
 
 
 ### this should be run on the command line outside the script, run with GPU 
-~/rds/rds-acf1004-afs-lab-rds/programs/dorado-0.6.2-linux-x64/bin/dorado basecaller --reference $genome -kit-name SQK-NBD114-24 --emit-moves hac,5mCG_5hmCG $file -r > $name-filtered.bam 
+dorado basecaller --reference $genome -kit-name SQK-NBD114-24 --emit-moves hac,5mCG_5hmCG $file -r > $name-filtered.bam 
 
 # seperate the file by barcodes
 mkdir sep
-~/rds/rds-acf1004-afs-lab-rds/programs/dorado-0.6.2-linux-x64/bin/dorado demux --output-dir sep --no-classify calls-ref-filtered.bam
+dorado demux --output-dir sep --no-classify calls-ref-filtered.bam
 
 ### do this on the command line outside the script, run with CPU
 # Activate the DeepMod2 environment
