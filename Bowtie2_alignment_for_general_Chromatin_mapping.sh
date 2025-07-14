@@ -7,15 +7,7 @@ mkdir bt2-$line
 cd bt2-$line
 
 ln -s ../fastq/*$name* ./
-# Load necessary modules
 # Trimming adapters and low-quality bases
-module purge
-module load cutadapt/1.9.1-foss-2016b-Python-2.7.12
-module load trimgalore/0.5.0
-module load samtools
-module load picard 
-module load bedtools
-module load UCSC
 
 trim_galore --paired --length 10 --trim1 --gzip *_R1_001.fastq *_R2_001.fastq
 
