@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 # This script performs Bowtie1 alignment for unique mapping to profile repeats.
 line=$1
 name=$2
